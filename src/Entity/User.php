@@ -10,6 +10,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\InheritanceType('JOINED')]
@@ -24,6 +25,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: "L'email est obligatoire")]
+    #[Assert\Email(message: "L'email n'est pas valide")]
     #[Groups(['getUsers', 'getRequests', 'getJobAdvertissements', 'getJobApplications'])]
     private ?string $email = null;
 
@@ -35,6 +38,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le mot de passe est obligatoire")]
+    #[Assert\Regex(pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/', message: "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre")]
     private ?string $password = null;
 
     #[ORM\ManyToMany(targetEntity: JobAdvertissement::class, mappedBy: 'candidateId')]

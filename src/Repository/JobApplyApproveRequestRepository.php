@@ -21,28 +21,27 @@ class JobApplyApproveRequestRepository extends ServiceEntityRepository
         parent::__construct($registry, JobApplyApproveRequest::class);
     }
 
-//    /**
-//     * @return JobApplyApproveRequest[] Returns an array of JobApplyApproveRequest objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('j')
-//            ->andWhere('j.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('j.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return JobApplyApproveRequest[] Returns an array of JobApplyApproveRequest objects
+    //     */
+    public function findUnapprovedRequests(): array
+    {
+        return $this->createQueryBuilder('j')
+            ->andWhere('j.approved = :val')
+            ->setParameter('val', 0)
+            ->orderBy('j.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?JobApplyApproveRequest
-//    {
-//        return $this->createQueryBuilder('j')
-//            ->andWhere('j.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?JobApplyApproveRequest
+    //    {
+    //        return $this->createQueryBuilder('j')
+    //            ->andWhere('j.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

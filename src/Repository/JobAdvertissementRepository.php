@@ -35,13 +35,23 @@ class JobAdvertissementRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    //    public function findOneBySomeField($value): ?JobAdvertissement
-    //    {
-    //        return $this->createQueryBuilder('j')
-    //            ->andWhere('j.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findOneById($id): ?JobAdvertissement
+    {
+        return $this->createQueryBuilder('j')
+            ->andWhere('j.id = :val')
+            ->andWhere('j.approved = 1')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    public function findByRecruiterId($recruiter): array
+    {
+        return $this->createQueryBuilder('j')
+            ->andWhere('j.recruiterId = :val')
+            ->setParameter('val', $recruiter)
+            ->orderBy('j.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
 }

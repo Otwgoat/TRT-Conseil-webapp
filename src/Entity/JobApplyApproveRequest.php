@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\JobApplyApproveRequestRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: JobApplyApproveRequestRepository::class)]
 class JobApplyApproveRequest
@@ -12,10 +13,12 @@ class JobApplyApproveRequest
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['getJobApplyApproveRequests'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['getJobApplyApproveRequests'])]
     private ?JobApplication $jobApplication = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]

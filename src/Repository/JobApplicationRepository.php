@@ -35,6 +35,17 @@ class JobApplicationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findApplicationsByUser($value): array
+    {
+        return $this->createQueryBuilder('j')
+            ->andWhere('j.candidateID = :val')
+            ->setParameter('val', $value)
+            ->orderBy('j.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    public function findOneBySomeField($value): ?JobApplication
     //    {
     //        return $this->createQueryBuilder('j')

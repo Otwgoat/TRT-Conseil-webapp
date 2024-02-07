@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\JobAdvertissementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: JobAdvertissementRepository::class)]
 class JobAdvertissement
@@ -15,25 +17,32 @@ class JobAdvertissement
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['getJobAdvertissements', 'getJobApproveRequest', 'getJobApplications'])]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getJobAdvertissements', 'getJobApproveRequest', 'getJobApplications'])]
+    #[Assert\NotBlank(message: "Le titre de l'annonce est obligatoire")]
+    #[Groups(['getJobAdvertissements', 'getJobApproveRequest', 'getJobApplications', 'getJobApplyApproveRequests'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 500)]
-    #[Groups(['getJobAdvertissements', 'getJobApproveRequest'])]
+    #[Assert\NotBlank(message: "La description de l'annonce est obligatoire")]
+    #[Groups(['getJobAdvertissements', 'getJobApproveRequest', 'getJobApplyApproveRequests'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getJobAdvertissements', 'getJobApproveRequest', 'getJobApplications'])]
+    #[Assert\NotBlank(message: "Le lieu de travail est obligatoire")]
+    #[Groups(['getJobAdvertissements', 'getJobApproveRequest', 'getJobApplications', 'getJobApplyApproveRequests'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nombre d'heures est obligatoire")]
     #[Groups(['getJobAdvertissements', 'getJobApproveRequest', 'getJobApplications'])]
     private ?string $planning = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le salaire est obligatoire")]
+    #[Assert\Positive(message: "Le salaire doit être un nombre positif")]
     #[Groups(['getJobAdvertissements', 'getJobApproveRequest', 'getJobApplications'])]
     private ?int $salary = null;
 
@@ -52,6 +61,19 @@ class JobAdvertissement
 
     #[ORM\OneToMany(mappedBy: 'jobID', targetEntity: JobApplication::class, orphanRemoval: true)]
     private Collection $jobApplications;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['getJobAdvertissements', 'getJobApproveRequest', 'getJobApplications'])]
+    private ?string $type = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message: "La date de début est obligatoire")]
+    #[Groups(['getJobAdvertissements', 'getJobApproveRequest', 'getJobApplications'])]
+    private ?\DateTimeInterface $startDate = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups(['getJobAdvertissements', 'getJobApproveRequest', 'getJobApplications'])]
+    private ?\DateTimeInterface $endDate = null;
 
     public function __construct()
     {
@@ -198,6 +220,42 @@ class JobAdvertissement
                 $jobApplication->setJobID(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getStartDate(): ?\DateTimeInterface
+    {
+        return $this->startDate;
+    }
+
+    public function setStartDate(\DateTimeInterface $startDate): static
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->endDate;
+    }
+
+    public function setEndDate(?\DateTimeInterface $endDate): static
+    {
+        $this->endDate = $endDate;
 
         return $this;
     }

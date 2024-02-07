@@ -24,11 +24,10 @@ class ApprovalRequestRepository extends ServiceEntityRepository
     //    /**
     //     * @return ApprovalRequest[] Returns an array of ApprovalRequest objects
     //     */
-    public function findByApproved($value): array
+    public function findUnapprovedRequest(): array
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.approved = :val')
-            ->setParameter('val', $value)
+            ->andWhere('a.approved = 0')
             ->orderBy('a.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()

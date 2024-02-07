@@ -12,17 +12,17 @@ class JobApplication
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['getJobApplications'])]
+    #[Groups(['getJobApplications', 'getJobApplyApproveRequests'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'jobApplications', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['getJobApplications'])]
+    #[Groups(['getJobApplications', 'getJobApplyApproveRequests'])]
     private ?JobAdvertissement $jobID = null;
 
     #[ORM\ManyToOne(inversedBy: 'applications')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['getJobApplications'])]
+    #[Groups(['getJobApplications', 'getJobApplyApproveRequests'])]
     private ?User $candidateID = null;
 
     #[ORM\Column]

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Candidate;
 use App\Entity\JobApplication;
 use App\Entity\JobApplyApproveRequest;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,12 +22,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class JobApplicationController extends AbstractController
 {
     #[Route('api/candidatures', name: 'getJobApplications', methods: ['GET'])]
+    #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
     public function getJobApplications(JobApplicationRepository $jar, SerializerInterface $si): JsonResponse
     {
         $jobApplications = $jar->findApprovedApplication(true);
         $jsonJobApplications = $si->serialize($jobApplications, 'json', ['groups' => 'getJobApplications']);
         return new JsonResponse($jsonJobApplications, JsonResponse::HTTP_OK, [], true);
     }
+
+    #[Route('api/candidatures/utilisateur/{id}', name: 'getJobApplicationsByUser', methods: ['GET'])]
+    public function getJobApplicationsByUser(JobApplicationRepository $jar, SerializerInterface $si, int $id): JsonResponse
+    {
+        $jobApplications = $jar->findApplicationsByUser($id);
+        $jsonJobApplications = $si->serialize($jobApplications, 'json', ['groups' => 'getJobApplications']);
+        return new JsonResponse($jsonJobApplications, JsonResponse::HTTP_OK, [], true);
+    }
+
+
 
     #[Route('api/candidature/{id}', name: 'getJobApplication', methods: ['GET'])]
     public function getJobApplication(JobApplicationRepository $jar, SerializerInterface $si, int $id): JsonResponse
@@ -46,6 +58,11 @@ class JobApplicationController extends AbstractController
             return new JsonResponse($si->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [], true);
         }
         $user = $security->getUser();
+        if ($user instanceof Candidate) {
+            if (!$user->isApproved()) {
+                return new JsonResponse('Votre compte n\'a pas encore été approuvé par un consultant.', JsonResponse::HTTP_BAD_REQUEST, [], true);
+            }
+        }
         $jobApplication->setCandidateId($user);
         $data = json_decode($request->getContent(), true);
         $jobAdvertissement = $jar->find($data['jobID']);
@@ -75,9 +92,9 @@ class JobApplicationController extends AbstractController
     /************************************************************************************* */
     #[Route('api/candidature-requetes', name: 'getJobApplyApproveRequests', methods: ['GET'])]
     #[IsGranted('ROLE_CONSULTANT', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
-    public function getJobApplyApproveRequests(SerializerInterface $si, JobApplicationRepository $jar): JsonResponse
+    public function getJobApplyApproveRequests(SerializerInterface $si, JobApplyApproveRequestRepository $jaarr): JsonResponse
     {
-        $jobApplyApproveRequests = $jar->findAll();
+        $jobApplyApproveRequests = $jaarr->findUnapprovedRequests();
         $jsonJobApplyApproveRequests = $si->serialize($jobApplyApproveRequests, 'json', ['groups' => 'getJobApplyApproveRequests']);
         return new JsonResponse($jsonJobApplyApproveRequests, JsonResponse::HTTP_OK, [], true);
     }
@@ -95,16 +112,25 @@ class JobApplicationController extends AbstractController
     /******************************************************************************************* */
     #[Route('api/candidature-requete/{id}', name: 'updateJobApplyApproveRequest', methods: ['PUT'])]
     #[IsGranted('ROLE_CONSULTANT', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
-    public function updateJobApplyApproveRequest(Request $request, SerializerInterface $si, EntityManagerInterface $em, JobApplyApproveRequestRepository $jobApplyApproveRequestRepository, JobApplicationRepository $jar): JsonResponse
+    public function updateJobApplyApproveRequest(Request $request, SerializerInterface $si, EntityManagerInterface $em, JobApplyApproveRequestRepository $jobApplyApproveRequestRepository, JobApplyApproveRequest $jaar): JsonResponse
     {
         $approveRequest = $jobApplyApproveRequestRepository->find($request->get('id'));
         $approveRequest->setApproved(true);
-        $jobApplication = $jobApplyApproveRequestRepository->getJobApplication();
+        $jobApplication = $jaar->getJobApplication();
         $jobApplication->setApproved(true);
         $em->persist($approveRequest);
         $em->persist($jobApplication);
         $em->flush();
         $jsonJobApplyApproveRequest = $si->serialize($approveRequest, 'json', ['groups' => 'getJobApplyApproveRequests']);
         return new JsonResponse($jsonJobApplyApproveRequest, JsonResponse::HTTP_OK, [], true);
+    }
+
+    #[Route('api/candidature-requete/{id}', name: 'deleteJobApplyApproveRequest', methods: ['DELETE'])]
+    #[IsGranted('ROLE_CONSULTANT', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
+    public function deleteJobApplyApproveRequest(EntityManagerInterface $em, JobApplyApproveRequest $currentJaar): JsonResponse
+    {
+        $em->remove($currentJaar);
+        $em->flush();
+        return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
     }
 }

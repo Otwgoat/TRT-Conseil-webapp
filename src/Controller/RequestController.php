@@ -22,7 +22,7 @@ class RequestController extends AbstractController
     #[IsGranted('ROLE_CONSULTANT', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
     public function getRequests(SerializerInterface $si, ApprovalRequestRepository $arr): JsonResponse
     {
-        $requests = $arr->findAll();
+        $requests = $arr->findUnapprovedRequest();
         $jsonRequests = $si->serialize($requests, 'json', ['groups' => 'getRequests', 'getUsers']);
         return new JsonResponse($jsonRequests, Response::HTTP_OK, [], true);
     }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\JobAdvertissement;
 use App\Entity\JobApproveRequest;
+use App\Entity\Recruiter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class JobAdvertissementController extends AbstractController
 {
@@ -30,11 +32,24 @@ class JobAdvertissementController extends AbstractController
         return new JsonResponse($jsonJobAdvertissements, Response::HTTP_OK, [], true);
     }
 
+    #[Route('api/mes-annonces', name: 'getMyJobAdvertissements', methods: ['GET'])]
+    #[IsGranted('ROLE_RECRUITER', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
+    public function getMyJobAdvertissements(JobAdvertissementRepository $jar, SerializerInterface $si, Security $security): JsonResponse
+    {
+        $user = $security->getUser();
+        $jobAdvertissements = $jar->findByRecruiterId($user);
+        $jsonJobAdvertissements = $si->serialize($jobAdvertissements, 'json', ['groups' => 'getJobAdvertissements']);
+        return new JsonResponse($jsonJobAdvertissements, Response::HTTP_OK, [], true);
+    }
+
     #[Route('api/annonce/{id}', name: 'getJobAdvertissement', methods: ['GET'])]
     #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
     public function getJobAdvertissement(JobAdvertissementRepository $jar, SerializerInterface $si, int $id): JsonResponse
     {
-        $jobAdvertissement = $jar->find($id);
+        $jobAdvertissement = $jar->findOneById($id);
+        if ($jobAdvertissement === null) {
+            throw new HttpException(404, 'Job Advertissement not found');
+        }
         $jsonJobAdvertissement = $si->serialize($jobAdvertissement, 'json', ['groups' => 'getJobAdvertissements']);
         return new JsonResponse($jsonJobAdvertissement, Response::HTTP_OK, [], true);
     }
@@ -49,6 +64,11 @@ class JobAdvertissementController extends AbstractController
             return new JsonResponse($si->serialize($errors, 'json'), Response::HTTP_BAD_REQUEST, [], true);
         }
         $user = $security->getUser();
+        if ($user instanceof Recruiter) {
+            if (!$user->isApproved()) {
+                return new JsonResponse('Votre compte n\'a pas encore été approuvé par un consultant.', Response::HTTP_BAD_REQUEST, [], true);
+            }
+        }
         $advertissement->setRecruiterId($user);
         $em->persist($advertissement);
         $approveRequest = new JobApproveRequest();
@@ -123,6 +143,7 @@ class JobAdvertissementController extends AbstractController
     /******************  Get all request that are pending to approve by a consultant */
     /****************************************************************************** */
     #[Route('api/requete-annonces', name: 'getUnapprovedRequest', methods: ['GET'])]
+    #[IsGranted('ROLE_CONSULTANT', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
     public function getUnapprovedRequest(JobApproveRequestRepository $jarr, SerializerInterface $si): JsonResponse
     {
         $jobApproveRequests = $jarr->findUnapprovedRequest(false);

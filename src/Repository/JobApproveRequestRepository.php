@@ -28,7 +28,7 @@ class JobApproveRequestRepository extends ServiceEntityRepository
             ->andWhere('j.approved = :val')
             ->setParameter('val', $value)
             ->orderBy('j.id', 'ASC')
-            ->setMaxResults(10)
+            ->setMaxResults(30)
             ->getQuery()
             ->getResult();
     }
