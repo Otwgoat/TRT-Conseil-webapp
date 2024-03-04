@@ -1,0 +1,34 @@
+.contentItem {
+    border: double 3px #3E5378;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2rem;
+    margin-bottom: 1rem;
+
+    .contentTitle {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: #3E5378;
+        display: flex;
+        justify-content: center;
+    }
+    p {
+        font-weight: 400;
+        padding-left: 2rem;
+        
+    }
+    .boldText {
+        font-weight: 500;
+    }
+  
+    .contentCtas {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        padding-top: 1rem;
+
+        .ctaButton {
+            margin: 0 1rem;}
+    }
+}

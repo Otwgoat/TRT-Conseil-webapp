@@ -1,0 +1,36 @@
+#loginPage {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    
+    align-items: center;
+    justify-content: center;
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+        height: 40%;
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            align-items: center;
+            margin-bottom: 1rem;
+            input {
+                width: 80%;
+                margin-top: 0.5rem;
+            }
+            label {
+                font-weight: 400;
+                font-size: 1rem;
+                color: #3E5378;
+            }
+            button {
+                width: 80%;
+                margin-left: 0;
+            }
+        }
+    }
+}

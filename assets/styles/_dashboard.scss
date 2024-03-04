@@ -1,0 +1,158 @@
+.dashboardPage {
+    width: 100%;
+    display: flex;
+    height: 90vh;
+   
+    
+    .dashboardNav {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 30%;
+       
+        border-right: double 5px rgb(196, 9, 9);
+        .dashboardNavItem {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            h2 {
+                font-size: 1rem;
+                border-bottom: 1px solid rgb(196, 9, 9);
+            }
+            p {
+                color: #3E5378;
+                &:hover {
+                    cursor: pointer;
+                    color: rgb(196, 9, 9);
+                }
+            
+            }
+        }
+    }
+    .dashboardContainer {
+        width: 70%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        .dashboardContent{
+            width: 90%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            h2 {
+                
+                font-weight: 500;
+                font-size: 2rem;
+                border-bottom: 5px double rgb(196, 9, 9);
+            }
+
+            form {
+                width: 90%;
+                min-height: 80%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                
+                label {
+                    font-weight: 400;
+                    font-size: 1rem;
+                    color: #3E5378;
+                   
+                }
+               
+                .fieldGroup {
+                    width: 90%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-evenly;
+                    height: 7vh;
+                    label {
+                        font-weight: 400;
+                        font-size: 1rem;
+                        color: #3E5378;
+                    }
+                    input {
+                        width: 45%;
+                        height: 1.5rem;
+                        border-radius: 5px;
+                        border: 1px solid #3E5378;
+                        &:active{
+                            border: rgb(196, 9, 9);
+                        }
+                    }
+                }
+                button {
+                    width: 45%;
+                    margin-top: 2rem;
+                    color: white;
+                    font-weight: 500;
+                    margin-left: 0;
+                }
+            }
+            .contentContainer {
+                display: flex;
+                min-height: 90%;
+                width: 90%;
+                flex-direction: column;
+                overflow-y: scroll;
+                align-items: center;
+                scroll-behavior: smooth;
+            }
+        }
+        .requestsContainer {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+            h2 {
+                color: #3E5378;
+                font-weight: 500;
+                font-size: 2rem;
+                border-bottom: 5px double #3E5378;
+            }
+            .requestItem {
+                width: 80%;
+                display: flex;
+                flex-direction: column;
+                border: double 3px #3E5378;
+                margin-bottom: 1.5rem;
+                .contentTitle {
+                    font-size: 1.5rem;
+                    font-weight: 500;
+                    color: #3E5378;
+                    display: flex;
+                    justify-content: center;
+                }
+                p {
+                    font-weight: 400;
+                    padding-left: 2rem;
+                    margin-bottom: 0;
+                    
+                }
+                .boldText {
+                    font-weight: 500;
+                }
+                .requestItemFooter {
+                    display: flex;
+                    justify-content: center;
+                    padding-bottom: 1rem;
+                    padding-top: 2rem;
+                }
+            }
+        }
+        
+
+
+            
+        
+    }
+}

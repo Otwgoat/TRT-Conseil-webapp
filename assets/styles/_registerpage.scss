@@ -1,0 +1,44 @@
+#registerPage {
+    width: 100%;
+    height: 80vh;
+    
+    display: flex;
+    justify-content: center;
+
+    form {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        label {
+            font-weight: 400;
+            font-size: 1rem;
+            color: #3E5378;
+            margin-bottom: 0.5rem;
+        }
+        #role , #birthDate {
+            width: 50%;
+            margin-bottom: 1rem;
+        }
+        
+        .fieldGroup {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            align-items: center;
+            margin-bottom: 1rem;
+            input {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            }
+           
+           
+        }
+        .ctaButton {
+            width: 50%;
+            margin-left: 0;
+        }
+    }
+
+}
