@@ -45,6 +45,9 @@ const Contact = () => {
             field="message"
             errors={state.errors}
           />
+          {state.succeeded && (
+            <p className="succesMessage">Votre message a bien été envoyé.</p>
+          )}
           <button
             className="ctaButton"
             type="submit"
