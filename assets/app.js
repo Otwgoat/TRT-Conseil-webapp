@@ -13,6 +13,7 @@ import { PersonalDashboard } from './pages/PersonalDashboard';
 import PrivateRoute from './routing/PrivateRoute';
 import { AdvertissementPage } from './pages/AdvertissementPage';
 import { AdDescriptionPage } from './pages/AdDescriptionPage';
+import Contact from './pages/Contact';
 
 
 authApi.setup();
@@ -39,6 +40,7 @@ const App = () => {
                     <Route path="/" element={<Homepage />} />
                     <Route path="/login"  element={<LoginPage />} />
                     <Route path="/inscription"  element={<RegisterPage />} />
+                    <Route path="/contact" element={<Contact />} />
                     
                 </Routes>
             </BrowserRouter>

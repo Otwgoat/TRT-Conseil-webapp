@@ -10,6 +10,8 @@ import {
 import "firebase/storage";
 
 export const AddCurriculum = () => {
+  const [succesMessage, setSuccesMessage] = useState();
+  const [errors, setErrors] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [file, setFile] = useState("test du path");
   const onFileChange = (e) => {
@@ -26,14 +28,14 @@ export const AddCurriculum = () => {
 
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app);
-  console.log(firebaseConfig);
 
   const sendCurriculum = async (e) => {
+    setSuccesMessage();
     e.preventDefault();
     const userId = currentUser.id;
 
     if (!file.name.endsWith(".pdf")) {
-      console.log("Seuls les fichiers PDF sont autorisés");
+      setErrors({ file: "Le fichier doit être au format PDF" });
       return;
     }
     const storageRef = ref(storage, `${userId}/${file.name}`);
@@ -42,7 +44,12 @@ export const AddCurriculum = () => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        // Progess function
+        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        if (progress < 100) {
+          setSuccesMessage("Chargement du fichier en cours");
+        } else {
+          setSuccesMessage("Chargement du fichier terminé");
+        }
       },
       (error) => {
         console.log(error);
@@ -76,6 +83,10 @@ export const AddCurriculum = () => {
       <h2>Ajouter un CV</h2>
       <form>
         <input type="file" onChange={onFileChange} />
+
+        {succesMessage && <p className="succesMessage">{succesMessage}</p>}
+
+        {errors.file && <p className="errorMessage">{errors.file}</p>}
         <button type="submit" onClick={sendCurriculum}>
           Envoyer
         </button>
