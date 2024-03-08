@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Header } from "../components/Header";
 import { useForm, ValidationError } from "@formspree/react";
 import { FieldGroup } from "../components/FieldGroup";
@@ -6,6 +6,9 @@ import { FieldGroup } from "../components/FieldGroup";
 const Contact = () => {
   const formspreeEndpoint = process.env.REACT_APP_FORMSPREE_ENDPOINT;
   const [state, handleSubmit] = useForm(formspreeEndpoint);
+  useEffect(() => {
+    console.log(formspreeEndpoint);
+  }, []);
   return (
     <div className="container">
       <Header />
