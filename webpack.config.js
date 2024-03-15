@@ -77,7 +77,7 @@ Encore
     module.exports = {
         plugins: [
           new Dotenv({
-            ignoreStub: true
+            prefix : 'process.env.'
           })
         ]
     
