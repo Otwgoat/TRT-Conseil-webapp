@@ -72,16 +72,16 @@ Encore
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
     
-    .configureDefinePlugin(options => {
-        const dotenv = new Dotenv();
-        const env = dotenv.config();
-
-        if (env.error) {
-            throw env.error;
-        }
-
-        options['process.env'].REACT_APP_FORMSPREE_ENDPOINT= JSON.stringify(env.parsed.REACT_APP_FORMSPREE_ENDPOINT);
-    })
+    
+    
+    module.exports = {
+        plugins: [
+          new Dotenv({
+            ignoreStub: true
+          })
+        ]
+    
+      };
 ;
 
   
