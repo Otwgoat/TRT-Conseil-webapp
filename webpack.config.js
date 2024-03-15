@@ -1,5 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
-const dotenv = require('dotenv-webpack');
+const Dotenv = require('dotenv-webpack');
 
 
 
@@ -73,6 +73,7 @@ Encore
     //.autoProvidejQuery()
     
     .configureDefinePlugin(options => {
+        const dotenv = new Dotenv();
         const env = dotenv.config();
 
         if (env.error) {
