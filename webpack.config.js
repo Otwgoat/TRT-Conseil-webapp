@@ -77,7 +77,7 @@ Encore
     module.exports = {
         plugins: [
           new Dotenv({
-            path: path.resolve(__dirname, `.env`),
+            systemvars: true,
             prefix : 'process.env.'
           })
         ]
