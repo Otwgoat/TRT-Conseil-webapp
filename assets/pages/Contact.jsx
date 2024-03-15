@@ -4,10 +4,14 @@ import { useForm, ValidationError } from "@formspree/react";
 import { FieldGroup } from "../components/FieldGroup";
 
 const Contact = () => {
-  const formspreeEndpoint = process.env.REACT_APP_FORMSPREE_ENDPOINT;
-  const [state, handleSubmit] = useForm(
-    process.env.REACT_APP_FORMSPREE_ENDPOINT
-  );
+  const formspreeEndpoint = () => {
+    if (process.env.NODE_ENV === "development") {
+      return process.env.REACT_APP_FORMSPREE_ENDPOINT;
+    } else {
+      return REACT_APP_FORMSPREE_ENDPOINT;
+    }
+  };
+  const [state, handleSubmit] = useForm(formspreeEndpoint);
 
   return (
     <div className="container">
