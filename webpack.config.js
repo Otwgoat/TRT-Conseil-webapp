@@ -1,7 +1,6 @@
 const Encore = require('@symfony/webpack-encore');
-if(process.env.NODE_ENV !== 'production'){
-    const Dotenv = require('dotenv-webpack');
-}
+const dotenv = require('dotenv-webpack');
+
 
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
@@ -73,9 +72,15 @@ Encore
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
     
-    .addPlugin(new Dotenv())
-    
-    
+    .configureDefinePlugin(options => {
+        const env = dotenv.config();
+
+        if (env.error) {
+            throw env.error;
+        }
+
+        options['process.env'].REACT_APP_FORMSPREE_ENDPOINT= JSON.stringify(env.parsed.REACT_APP_FORMSPREE_ENDPOINT);
+    })
 ;
 
   
