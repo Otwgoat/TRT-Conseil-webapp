@@ -5,13 +5,10 @@
 
     form {
         width: 30%;
-        
         display: flex;
         flex-direction: column;
         align-items: center;
-
         .fieldGroup {
-            
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -21,13 +18,11 @@
             }
          
         }
-
         textarea {
             width: 100%;
             height: 10rem;
             
         }
-
         .ctaButton {
             margin-left: 0;
         }
