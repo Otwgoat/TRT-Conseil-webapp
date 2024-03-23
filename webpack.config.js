@@ -74,16 +74,15 @@ Encore
     
     
     
-    module.exports = {
-        plugins: [
-          new Dotenv({
-            systemvars: true,
-            prefix : 'process.env.'
-          })
-        ]
+ .addPlugin(new Dotenv({
+  systemvars: true,
+  prefix : 'process.env.'
+}));
+          
+        
     
-      };
-;
+      
+
 
   
 

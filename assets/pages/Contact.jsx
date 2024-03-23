@@ -6,18 +6,21 @@ import { FieldGroup } from "../components/FieldGroup";
 const Contact = () => {
   const formspreeEndpoint = () => {
     if (process.env.NODE_ENV === "development") {
-      return process.env.REACT_APP_FORMSPREE_ENDPOINT;
+      return process.env.FORMSPREE_ENDPOINT;
     } else {
-      return REACT_APP_FORMSPREE_ENDPOINT;
+      return FORMSPREE_ENDPOINT;
     }
   };
-  const [state, handleSubmit] = useForm(formspreeEndpoint);
+  const [state, handleSubmit] = useForm(formspreeEndpoint());
 
+  useEffect(() => {
+    console.log(process.env.NODE_ENV);
+  }, []);
   return (
     <div className="container">
       <Header />
       <main id="contactPage">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} method="POST">
           <FieldGroup
             id="firstname"
             label="Prénom"
