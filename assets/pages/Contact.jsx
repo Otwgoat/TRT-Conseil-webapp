@@ -5,11 +5,7 @@ import { FieldGroup } from "../components/FieldGroup";
 
 const Contact = () => {
   const formspreeEndpoint = () => {
-    if (process.env.NODE_ENV === "development") {
-      return process.env.FORMSPREE_ENDPOINT;
-    } else {
-      return REACT_APP_FORMSPREE_ENDPOINT;
-    }
+    return process.env.FORMSPREE_ENDPOINT;
   };
   const [state, handleSubmit] = useForm(formspreeEndpoint());
 
