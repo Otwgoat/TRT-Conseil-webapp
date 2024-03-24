@@ -5,19 +5,19 @@ import { ApplicationRequests } from "./consultant/ApplicationRequests";
 import UpdatePassword from "./UpdatePassword";
 
 export const ConsultantDashboard = () => {
-  const [dislayingRequests, setDislayingRequests] = useState("registering");
+  const [displayingRequests, setDisplayingRequests] = useState("registering");
   const displayUpdatePassword = () => {
     setDisplayingRequests("updatePassword");
   };
   const displayApplicationRequests = () => {
-    setDislayingRequests("application");
+    setDisplayingRequests("application");
   };
 
   const displayAdvertisementRequests = () => {
-    setDislayingRequests("advertissement");
+    setDisplayingRequests("advertissement");
   };
   const displayRegisteringRequests = () => {
-    setDislayingRequests("registering");
+    setDisplayingRequests("registering");
   };
   return (
     <main className="dashboardPage" id="consultantPage">
@@ -47,10 +47,10 @@ export const ConsultantDashboard = () => {
         </div>
       </div>
       <div className="dashboardContainer">
-        {dislayingRequests === "updatePassword" && <UpdatePassword />}
-        {dislayingRequests === "registering" && <RegisteringRequests />}
-        {dislayingRequests === "advertissement" && <AdvertissementRequests />}
-        {dislayingRequests === "application" && <ApplicationRequests />}
+        {displayingRequests === "updatePassword" && <UpdatePassword />}
+        {displayingRequests === "registering" && <RegisteringRequests />}
+        {displayingRequests === "advertissement" && <AdvertissementRequests />}
+        {displayingRequests === "application" && <ApplicationRequests />}
       </div>
     </main>
   );

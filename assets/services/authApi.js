@@ -8,7 +8,6 @@ function authenticate(credentials) {
         .post(apiPath("login_check"), credentials)
         .then(console.log(apiPath("login_check")))
         .then((response) => {
-            console.log(response);
             return response.data.token;
             
         })
@@ -35,9 +34,9 @@ function setAxiosToken (token) {
 
     
 function setup () {
-    // 1. Voir si on a un token
+    //  Voir si on a un token
     const token = window.localStorage.getItem("authToken");
-    // 2. Si le token est encore valide
+    // ' Si le token est encore valide
     if(token){
         const jwtData = jwtDecode(token);
         if((jwtData.exp * 1000) > new Date().getTime()){

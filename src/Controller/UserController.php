@@ -174,7 +174,7 @@ class UserController extends AbstractController
             ->from('lucas.jouffroy@gmail.com')
             ->to($userMail)
             ->subject('Welcome to TRT-Conseil')
-            ->text('Welcome to TRT-Conseil, your account has been successfully created. You can now log in to your personal space. Here is the password assigned to you: ' . $randomPassword . '. You will be able to change it soon, but for now, please keep it safe. Best regards, Your TRT-Conseil team.');
+            ->text('Bienvenue sur TRT-Conseil, votre compte a bien été créé. Vous pouvez dès à présent vous connecter à votre espace personnel. Voici le mot de passe qui vous a été attribué: ' . $randomPassword . '. Vous pourrez bientôt le modifier, en attendant conservez le précieusement. Bien cordialement, Votre équipe TRT-Conseil.');
         $mailer->send($email);
 
         // Persist the user entity

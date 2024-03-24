@@ -105,7 +105,7 @@ export const PersonalInfos = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await userApi.getUser();
-      console.log(data);
+
       setCurrentUser(data);
     };
     fetchData();
