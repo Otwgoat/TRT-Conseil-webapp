@@ -7,7 +7,6 @@ export const Applications = () => {
     const fetchData = async () => {
       const data = await applicationsApi.getAllUserApplications();
       setApplications(data);
-      console.log(data);
     };
     fetchData();
   }, []);

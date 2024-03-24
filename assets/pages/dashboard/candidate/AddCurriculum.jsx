@@ -55,14 +55,12 @@ export const AddCurriculum = () => {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File available at", downloadURL);
           let data = {
             cvPath: downloadURL,
           };
 
           try {
             userApi.uploadCurriculum(data);
-            console.log(currentUser.id);
           } catch (error) {
             console.log(error);
           }

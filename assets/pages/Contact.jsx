@@ -5,14 +5,10 @@ import { FieldGroup } from "../components/FieldGroup";
 
 const Contact = () => {
   const formspreeEndpoint = () => {
-    console.log(process.env.FORMSPREE_ENDPOINT);
     return process.env.FORMSPREE_ENDPOINT;
   };
   const [state, handleSubmit] = useForm(formspreeEndpoint());
 
-  useEffect(() => {
-    console.log(process.env.NODE_ENV);
-  }, []);
   return (
     <div className="container">
       <Header />

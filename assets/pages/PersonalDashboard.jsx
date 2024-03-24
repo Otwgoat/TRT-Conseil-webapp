@@ -19,6 +19,7 @@ export const PersonalDashboard = () => {
       navigate("/login");
     }
   }, [isAuthenticated]);
+
   return (
     <div className="container">
       <Header />

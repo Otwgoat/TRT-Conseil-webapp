@@ -29,7 +29,7 @@ export const PersonalInfos = () => {
   const handleSubmit = async (e) => {
     setSuccesMessage();
     e.preventDefault();
-    console.log(firstName);
+
     if (
       userRole === "candidate" &&
       email !== "" &&
@@ -65,15 +65,13 @@ export const PersonalInfos = () => {
 
     try {
       await userApi.updateUser(userData, currentUser.id).then((response) => {
-        console.log(response);
         setSuccesMessage(response.status);
         setErrorMessage();
       });
     } catch (error) {
-      console.log(error);
       if (error.response && error.response.data) {
         const violations = error.response.data.violations;
-        console.log(violations);
+
         if (violations) {
           const apiErrors = {};
           violations.forEach(({ propertyPath, title }) => {

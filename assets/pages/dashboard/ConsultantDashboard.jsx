@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { RegisteringRequests } from "./consultant/RegisteringRequests";
 import { AdvertissementRequests } from "./consultant/AdvertissementRequests";
 import { ApplicationRequests } from "./consultant/ApplicationRequests";
+import UpdatePassword from "./UpdatePassword";
 
 export const ConsultantDashboard = () => {
   const [dislayingRequests, setDislayingRequests] = useState("registering");

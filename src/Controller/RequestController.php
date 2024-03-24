@@ -37,6 +37,15 @@ class RequestController extends AbstractController
     }
 
     #[Route('api/requete/{id}', name: 'updateRequest', methods: ['PUT'])]
+    /**
+     * Updates a request and approves it.
+     *
+     * @param Request $request The HTTP request object.
+     * @param EntityManagerInterface $em The entity manager.
+     * @param ApprovalRequest $currentAr The current approval request.
+     * @param ApprovalRequestRepository $arr The approval request repository.
+     * @return JsonResponse The JSON response.
+     */
     #[IsGranted('ROLE_CONSULTANT', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
     public function updateRequest(Request $request,  EntityManagerInterface $em, ApprovalRequest $currentAr, ApprovalRequestRepository $arr): JsonResponse
     {

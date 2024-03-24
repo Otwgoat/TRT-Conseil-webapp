@@ -7,7 +7,6 @@ export const AdvertissementRequests = () => {
     const fetchData = async () => {
       const data = await advertissementRequestApi.getAllRequests();
       setRequests(data);
-      console.log(data);
     };
     fetchData();
   }, []);

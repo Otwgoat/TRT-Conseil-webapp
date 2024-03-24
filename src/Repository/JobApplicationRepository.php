@@ -71,15 +71,4 @@ class JobApplicationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-
-    //    public function findOneBySomeField($value): ?JobApplication
-    //    {
-    //        return $this->createQueryBuilder('j')
-    //            ->andWhere('j.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

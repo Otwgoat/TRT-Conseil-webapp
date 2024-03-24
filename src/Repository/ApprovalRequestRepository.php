@@ -33,14 +33,4 @@ class ApprovalRequestRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    //    public function findOneBySomeField($value): ?ApprovalRequest
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

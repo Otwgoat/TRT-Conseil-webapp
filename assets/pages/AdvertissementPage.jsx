@@ -8,7 +8,6 @@ export const AdvertissementPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await advertissementApi.findAllAdvertissements();
-      console.log(data);
       setAdvertissements(data);
     };
     fetchData();

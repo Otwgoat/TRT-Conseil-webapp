@@ -7,7 +7,6 @@ export const RegisteringRequests = () => {
     const fetchData = async () => {
       const data = await registeringRequestApi.getAllRequests();
       setRegisteringRequests(data);
-      console.log(data);
     };
     fetchData();
   }, []);

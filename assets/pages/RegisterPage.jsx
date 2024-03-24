@@ -71,7 +71,6 @@ export const RegisterPage = () => {
     }
     try {
       await userApi.createUser(userData).then((response) => {
-        console.log(response);
         setErrors({});
         setSuccessMessage("Votre compte a bien été créé.");
         formRef.current.reset();
@@ -82,10 +81,10 @@ export const RegisterPage = () => {
           "Cet email est déjà utilisé pour un autre compte"
         );
       }
-      console.log(error);
+
       if (error.response && error.response.data) {
         const violations = error.response.data.violations;
-        console.log(violations);
+
         if (violations) {
           const apiErrors = {};
           violations.forEach(({ propertyPath, title }) => {

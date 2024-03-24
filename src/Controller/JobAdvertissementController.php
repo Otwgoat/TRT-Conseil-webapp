@@ -38,9 +38,13 @@ class JobAdvertissementController extends AbstractController
     #[IsGranted('ROLE_RECRUITER', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
     public function getApplicationsByAdvertissement(JobApplicationRepository $jar, SerializerInterface $si, int $id): JsonResponse
     {
-
+        // Retrieve the approved applications for a specific job advertisement
         $applications = $jar->findApprovedApplicationByAd(true, $id);
+
+        // Serialize the applications into JSON format
         $jsonJobApplications = $si->serialize($applications, 'json', ['groups' => 'getJobApplications']);
+
+        // Return the serialized applications as a JSON response
         return new JsonResponse($jsonJobApplications, Response::HTTP_OK, [], true);
     }
 
@@ -48,9 +52,16 @@ class JobAdvertissementController extends AbstractController
     #[IsGranted('ROLE_RECRUITER', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
     public function getMyJobAdvertissements(JobAdvertissementRepository $jar, SerializerInterface $si, Security $security): JsonResponse
     {
+        // Get the current user
         $user = $security->getUser();
+
+        // Retrieve job advertisements created by the current user
         $jobAdvertissements = $jar->findByRecruiterId($user);
+
+        // Serialize the job advertisements into JSON format
         $jsonJobAdvertissements = $si->serialize($jobAdvertissements, 'json', ['groups' => 'getJobAdvertissements']);
+
+        // Return the serialized job advertisements as a JSON response
         return new JsonResponse($jsonJobAdvertissements, Response::HTTP_OK, [], true);
     }
 
@@ -70,26 +81,41 @@ class JobAdvertissementController extends AbstractController
     #[IsGranted('ROLE_RECRUITER', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
     public function createJobAdvertissement(Request $request, SerializerInterface $si, EntityManagerInterface $em, ValidatorInterface $validator, UrlGeneratorInterface $urlGenerator, Security $security): JsonResponse
     {
+        // Deserialize the request content into a JobAdvertissement object
         $advertissement = $si->deserialize($request->getContent(), JobAdvertissement::class, 'json');
+
+        // Validate the JobAdvertissement object
         $errors = $validator->validate($advertissement);
         if (count($errors) > 0) {
             return new JsonResponse($si->serialize($errors, 'json'), Response::HTTP_BAD_REQUEST, [], true);
         }
+
+        // Get the current user
         $user = $security->getUser();
+
+        // Check if the user is a Recruiter and if their account is approved
         if ($user instanceof Recruiter) {
             if (!$user->isApproved()) {
                 return new JsonResponse('Votre compte n\'a pas encore été approuvé par un consultant.', Response::HTTP_BAD_REQUEST, [], true);
             }
         }
+
+        // Set the Recruiter ID for the JobAdvertissement
         $advertissement->setRecruiterId($user);
+
+        // Persist the JobAdvertissement and create a new JobApproveRequest
         $em->persist($advertissement);
         $approveRequest = new JobApproveRequest();
         $approveRequest->setJobID($advertissement);
         $approveRequest->setApproved(false);
         $em->persist($approveRequest);
         $em->flush();
+
+        // Serialize the JobAdvertissement object and generate the location URL
         $jsonAdvertissement = $si->serialize($advertissement, 'json', ['groups' => 'getJobAdvertissements']);
         $location = $urlGenerator->generate('getJobAdvertissement', ['id' => $advertissement->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        // Return the serialized JobAdvertissement with the location header
         return new JsonResponse($jsonAdvertissement, Response::HTTP_OK, ['Location' => $location], true);
     }
 
@@ -135,22 +161,29 @@ class JobAdvertissementController extends AbstractController
     }
     /***** Approve a jobApproveRequest */
     /******************************** */
+
     #[Route('api/requete-annonce/{id}', name: 'updateJobApproveRequest', methods: ['PUT'])]
     #[IsGranted('ROLE_CONSULTANT', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
     public function updateJobApproveRequest(Request $request, SerializerInterface $si, EntityManagerInterface $em, JobApproveRequest $currentJar, JobApproveRequestRepository $jarr): JsonResponse
     {
-
+        // Find the JobApproveRequest by ID
         $jobApproveRequest = $jarr->find($request->get('id'));
+
+        // Set the JobApproveRequest and corresponding JobAdvertissement as approved
         $jobApproveRequest->setApproved(true);
         $jobAdvertissement = $jobApproveRequest->getJobID();
         $jobAdvertissement->setApproved(true);
+
+        // Persist the changes to the database
         $em->persist($jobApproveRequest);
         $em->persist($jobAdvertissement);
         $em->flush();
 
+        // Serialize the updated JobApproveRequest and return as JSON response
         $jsonJobApproveRequest = $si->serialize($jobApproveRequest, 'json', ['groups' => 'getJobApproveRequests']);
         return new JsonResponse($jsonJobApproveRequest, Response::HTTP_OK, [], true);
     }
+
 
     #[Route('api/requete-annonce/{id}', name: 'deleteJobApproveRequest', methods: ['DELETE'])]
     #[IsGranted('ROLE_CONSULTANT', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
@@ -160,6 +193,7 @@ class JobAdvertissementController extends AbstractController
         $em->flush();
         return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
     }
+
 
     /******************  Get all request that are pending to approve by a consultant */
     /****************************************************************************** */

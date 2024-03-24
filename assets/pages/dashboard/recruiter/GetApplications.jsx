@@ -7,7 +7,6 @@ export const GetApplications = (props) => {
   const jobID = props.jobID;
 
   useEffect(() => {
-    console.log(jobID);
     const fetchData = async () => {
       const data = await applicationsApi.getApplicationByAdvertissement(jobID);
       setApplications(data);

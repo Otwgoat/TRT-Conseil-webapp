@@ -27,7 +27,7 @@ class CreateAdminCommand extends Command
     {
         $this
             ->setName('app:create-admin')
-            ->setDescription('Create an admin admin')
+            ->setDescription('Create an admin')
             ->setHelp('This command allows you to create an admin admin')
             ->addArgument('firstName', InputArgument::REQUIRED, 'Admin firstname')
             ->addArgument('lastName', InputArgument::REQUIRED, 'Admin lastName')
@@ -44,12 +44,6 @@ class CreateAdminCommand extends Command
         $email = $input->getArgument('email');
         $password = $input->getArgument('password');
         $role = 'ROLE_ADMIN';
-
-
-        /*$user = new User();
-        
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();*/
 
         $admin = new Admin();
         $admin->setEmail($email);

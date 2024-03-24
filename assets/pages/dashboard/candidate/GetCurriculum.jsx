@@ -23,14 +23,12 @@ export const GetCurriculum = () => {
     const fetchData = async () => {
       const data = await userApi.getUser();
       setCurrentUser(data);
-      console.log(data);
     };
     fetchData();
   }, []);
 
   useEffect(() => {
     setHttpsReference(ref(getStorage(), currentUser.cvPath));
-    console.log(httpsReference);
   }, [currentUser]);
 
   return (

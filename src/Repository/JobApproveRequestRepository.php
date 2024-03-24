@@ -22,6 +22,12 @@ class JobApproveRequestRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * Finds unapproved requests based on the given value.
+     *
+     * @param mixed $value The value to filter the unapproved requests.
+     * @return array The array of unapproved requests.
+     */
     public function findUnapprovedRequest($value): array
     {
         return $this->createQueryBuilder('j')
@@ -32,14 +38,4 @@ class JobApproveRequestRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    //    public function findOneBySomeField($value): ?JobApproveRequest
-    //    {
-    //        return $this->createQueryBuilder('j')
-    //            ->andWhere('j.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

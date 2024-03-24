@@ -24,15 +24,13 @@ const UpdatePassword = () => {
     }
     try {
       userApi.updatePassword(data).then((response) => {
-        console.log(response);
         setErrors({});
         setSuccesMessage("Mot de passe modifié avec succès.");
       });
     } catch (error) {
-      console.log(error);
       if (error.response && error.response.data) {
         const violations = error.response.data.violations;
-        console.log(violations);
+
         if (violations) {
           const apiErrors = {};
           violations.forEach(({ propertyPath, title }) => {

@@ -8,7 +8,6 @@ export const ApplicationRequests = () => {
     const fetchData = async () => {
       const data = await applicationRequestsApi.getAllRequests();
       setRequests(data);
-      console.log(data);
     };
     fetchData();
   }, []);

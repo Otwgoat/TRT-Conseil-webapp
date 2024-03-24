@@ -11,15 +11,12 @@ export const GetAdvertissements = () => {
     const fetchAdvertissements = async () => {
       await advertissementApi.getMyAdvertissements().then((data) => {
         setAdvertissements(data);
-        console.log(data);
       });
     };
     fetchAdvertissements();
   }, []);
   const handleDelete = async (id) => {
-    await advertissementApi.deleteMyAdvertissement(id).then((data) => {
-      console.log(data);
-    });
+    await advertissementApi.deleteMyAdvertissement(id).then((data) => {});
   };
   return (
     <div className="dashboardContent">

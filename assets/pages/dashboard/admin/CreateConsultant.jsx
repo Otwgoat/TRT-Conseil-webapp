@@ -36,10 +36,9 @@ export const CreateConsultant = () => {
         setSuccesMessage("Consultant créé avec succès.");
       });
     } catch (error) {
-      console.log(error);
       if (error.response && error.response.data) {
         const violations = error.response.data.violations;
-        console.log(violations);
+
         if (violations) {
           const apiErrors = {};
           violations.forEach(({ propertyPath, title }) => {

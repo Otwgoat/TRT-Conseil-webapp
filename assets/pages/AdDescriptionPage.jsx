@@ -27,7 +27,7 @@ export const AdDescriptionPage = () => {
     const id = pathname.substring(pathname.lastIndexOf("/") + 1);
     const fetchData = async () => {
       const data = await advertissementApi.findOneAdvertissement(id);
-      console.log(data);
+
       setAd(data);
     };
     fetchData();
@@ -41,9 +41,7 @@ export const AdDescriptionPage = () => {
     try {
       await applicationsApi.sendApplication(data);
       setApplicationSuccess(true);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

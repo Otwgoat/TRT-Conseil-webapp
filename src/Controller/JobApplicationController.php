@@ -45,20 +45,33 @@ class JobApplicationController extends AbstractController
     #[Route('api/candidatures/utilisateur', name: 'getJobApplicationsByUser', methods: ['GET'])]
     public function getJobApplicationsByUser(JobApplicationRepository $jar, SerializerInterface $si, Security $security): JsonResponse
     {
+        // Get the authenticated user
         $user = $security->getUser();
+
+        // Find approved job applications by user
         $jobApplications = $jar->findApprovedApplicationByUser(true, $user);
+
+        // Serialize the job applications to JSON
         $jsonJobApplications = $si->serialize($jobApplications, 'json', ['groups' => 'getJobApplications']);
+
+        // Return the JSON response
         return new JsonResponse($jsonJobApplications, JsonResponse::HTTP_OK, [], true);
     }
 
     #[Route('api/candidature-id-utilisateur/{jobID}', name: 'getJobApplicationByIdByUser', methods: ['GET'])]
-    #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
+    #[IsGranted('ROLE_USER', message: 'You do not have permission to access this resource')]
     public function getJobApplicationByIdByUser(Request $request, JobApplicationRepository $jar, SerializerInterface $si, Security $security, $jobID): JsonResponse
     {
+        // Get the authenticated user
         $user = $security->getUser();
 
+        // Find the job application by user and job ID
         $jobApplication = $jar->findApplicationsByUserAndById($jobID, $user);
+
+        // Serialize the job application to JSON
         $jsonJobApplications = $si->serialize($jobApplication, 'json', ['groups' => 'getJobApplications']);
+
+        // Return the JSON response
         return new JsonResponse($jsonJobApplications, JsonResponse::HTTP_OK, [], true);
     }
 
@@ -74,28 +87,45 @@ class JobApplicationController extends AbstractController
     #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
     public function createJobApplication(Request $request, EntityManagerInterface $em, ValidatorInterface $validator, SerializerInterface $si, UrlGeneratorInterface $ugi, Security $security, JobAdvertissementRepository $jar): JsonResponse
     {
+        // Deserialize the request content into a JobApplication object
         $jobApplication = $si->deserialize($request->getContent(), JobApplication::class, 'json');
+
+        // Validate the JobApplication object
         $errors = $validator->validate($jobApplication);
         if (count($errors) > 0) {
             return new JsonResponse($si->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [], true);
         }
+
+        // Get the authenticated user
         $user = $security->getUser();
+
+        // Check if the user is a Candidate and if their account is approved
         if ($user instanceof Candidate) {
             if (!$user->isApproved()) {
                 return new JsonResponse('Votre compte n\'a pas encore été approuvé par un consultant.', JsonResponse::HTTP_BAD_REQUEST, [], true);
             }
         }
+
+        // Set the Candidate ID and Job ID for the JobApplication
         $jobApplication->setCandidateId($user);
         $data = json_decode($request->getContent(), true);
         $jobAdvertissement = $jar->find($data['jobID']);
         $jobApplication->setJobID($jobAdvertissement);
+
+        // Create a new JobApplyApproveRequest and set its properties
         $approveRequest = new JobApplyApproveRequest();
         $approveRequest->setJobApplication($jobApplication);
         $approveRequest->setApproved(false);
+
+        // Persist the JobApplyApproveRequest and flush the changes to the database
         $em->persist($approveRequest);
         $em->flush();
+
+        // Serialize the JobApplication object and generate the location URL
         $jsonJobApplication = $si->serialize($jobApplication, 'json', ['groups' => 'getJobApplications']);
         $location = $ugi->generate('getJobApplication', ['id' => $jobApplication->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        // Return the serialized JobApplication as a JsonResponse with the location header
         return new JsonResponse($jsonJobApplication, JsonResponse::HTTP_OK, ['Location' => $location], true);
     }
 
@@ -138,25 +168,47 @@ class JobApplicationController extends AbstractController
     #[IsGranted('ROLE_CONSULTANT', message: 'Vous n\'avez pas les droits pour accéder à cette ressource')]
     public function updateJobApplyApproveRequest(MailerInterface $mailer, CandidateRepository $candidateRepo, Request $request, SerializerInterface $si, EntityManagerInterface $em, JobApplyApproveRequestRepository $jobApplyApproveRequestRepository, JobApplyApproveRequest $jaar): JsonResponse
     {
-
+        // Find the JobApplyApproveRequest by ID
         $approveRequest = $jobApplyApproveRequestRepository->find($request->get('id'));
+
+        // Set the approve status to true
         $approveRequest->setApproved(true);
+
+        // Get the associated JobApplication
         $jobApplication = $jaar->getJobApplication();
+
+        // Set the approve status of the JobApplication to true
         $jobApplication->setApproved(true);
+
+        // Get the candidate associated with the JobApplication
         $candidate = $candidateRepo->find($jobApplication->getCandidateId());
+
+        // Get the path of the candidate's CV
         $cvPath = $candidate->getCvPath();
+
+        // Get the recruiter associated with the JobApplication
         $recruiter = $jobApplication->getJobID()->getRecruiterId();
+
+        // Get the email of the recruiter
         $recruiterMail = $recruiter->getEmail();
+
+        // Create an email with the CV attached
         $email = (new Email())
             ->from('lucas.jouffroy@gmail.com')
             ->to($recruiterMail)
-            ->subject('TRT-Conseil - Nouvelle candidature approuvée')
-            ->text('Bonjour, une nouvelle candidature a été approuvée pour votre annonce. Vous pouvez consulter le CV du candidat en pièce jointe de ce mail. Bien cordialement, votre équipe TRT-Conseil.')
+            ->subject('TRT-Conseil - New Approved Application')
+            ->text('Hello, a new application has been approved for your job advertisement. You can find the candidate\'s CV attached to this email. Best regards, your TRT-Conseil team.')
             ->attachFromPath($cvPath);
+
+        // Send the email
         $mailer->send($email);
+
+        // Persist the changes to the JobApplyApproveRequest and JobApplication
         $em->persist($approveRequest);
         $em->persist($jobApplication);
         $em->flush();
+
+        // Serialize the updated JobApplyApproveRequest
         $jsonJobApplyApproveRequest = $si->serialize($approveRequest, 'json', ['groups' => 'getJobApplyApproveRequests']);
 
         return new JsonResponse($jsonJobApplyApproveRequest, JsonResponse::HTTP_OK, [], true);

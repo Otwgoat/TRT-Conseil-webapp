@@ -42,7 +42,6 @@ export const CreateAd = () => {
     if (endDate) {
       data.endDate = endDate;
       if (startDate < endDate) {
-        console.log("La date de début est avant la date de fin");
         setErrors({ ...errors, endDate: "" });
       } else {
         setErrors({
@@ -53,7 +52,6 @@ export const CreateAd = () => {
       }
     }
     if (startDate < new Date().toISOString().split("T")[0]) {
-      console.log("La date de début est avant la date d'aujourd'hui");
       setErrors({
         ...errors,
         startDate: "La date de début doit être après aujourd'hui",
@@ -62,7 +60,6 @@ export const CreateAd = () => {
     }
     try {
       await advertissementApi.postAdvertissement(data).then((response) => {
-        console.log(response);
         setErrors({});
         formRef.current.reset();
       });
@@ -70,7 +67,7 @@ export const CreateAd = () => {
     } catch (error) {
       if (error.response && error.response.data) {
         const violations = error.response.data.violations;
-        console.log(violations);
+
         // Check if there's violation(s) and assign them to the properties in error's useState
         //====================================================================================
         if (violations) {

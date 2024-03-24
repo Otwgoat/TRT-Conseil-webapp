@@ -34,14 +34,4 @@ class JobApplyApproveRequestRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    //    public function findOneBySomeField($value): ?JobApplyApproveRequest
-    //    {
-    //        return $this->createQueryBuilder('j')
-    //            ->andWhere('j.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }
