@@ -23,9 +23,7 @@ export const RegisteringRequests = () => {
       registeringRequests.filter((request) => request.id !== id)
     );
   };
-  useEffect(() => {
-    console.log(registeringRequests);
-  }, [registeringRequests]);
+
   return (
     <div className="requestsContainer">
       <h2>Demandes d'approbation d'inscription</h2>
@@ -39,13 +37,35 @@ export const RegisteringRequests = () => {
               {request.user_id.firstName} {request.user_id.lastName}
             </h3>
             <h3 className="contentTitle">{request.user_id.companyName}</h3>
-            <p className="boldText">{request.user_id.companyAdress}</p>
-            <p className="boldText">{request.user_id.email}</p>
-            <p className="boldText">{request.user_id.job}</p>
-            <p className="boldText">
-              {request.user_id.roles[0] === "ROLE_CANDIDATE"
-                ? "Candidat"
-                : "Recruteur"}
+
+            {request.user_id.roles[0] === "ROLE_RECRUITER" && (
+              <p>
+                Adresse de l'employeur:{" "}
+                <span className="boldText">
+                  {request.user_id.companyAdress}
+                </span>
+              </p>
+            )}
+
+            <p>
+              Email de l'utilisateur:{" "}
+              <span className="boldText">{request.user_id.email}</span>
+            </p>
+
+            {request.user_id.roles[0] === "ROLE_CANDIDAT" && (
+              <p>
+                Métier de l'utilisateur:{" "}
+                <span className="boldText">{request.user_id.job}</span>
+              </p>
+            )}
+
+            <p>
+              Type d'utilisateur:{" "}
+              <span className="boldText">
+                {request.user_id.roles[0] === "ROLE_CANDIDATE"
+                  ? "Candidat"
+                  : "Recruteur"}
+              </span>
             </p>
 
             <div className="requestItemFooter">

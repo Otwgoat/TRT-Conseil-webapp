@@ -20,12 +20,11 @@ function getUser(){
 })};
 
 function uploadCurriculum (data){
-    return axios.put(apiPath("telechargement-cv"), data).then((response) => console.log(response));
+    return axios.put(apiPath("telechargement-cv"), data);
 }
 
 function getCurriculum (path) {
-    
-        return axios.get(path);
+    return axios.get(path);
     };
 
 

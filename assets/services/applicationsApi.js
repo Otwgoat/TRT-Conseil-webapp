@@ -6,14 +6,13 @@ function getAllUserApplications() {
 }
 
 function sendApplication(data){
-    return axios.post(apiPath("candidatures"), data ).then((response) => console.log(response));
+    return axios.post(apiPath("candidatures"), data );
       
 }
 
 function getApplicationByJobAndUser(jobID){
     return axios.get(apiPath("candidature-id-utilisateur/" + jobID ))
     .then((response) => {
-        
         return response.data.length;
     });
 } 
@@ -21,7 +20,6 @@ function getApplicationByJobAndUser(jobID){
 function getApplicationByAdvertissement(jobID){
     return axios.get(apiPath("annonce/" + jobID + "/candidatures"))
     .then((response) => {
-        console.log(response.data);
         return response.data;
     })
 }

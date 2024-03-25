@@ -31,10 +31,30 @@ export const ApplicationRequests = () => {
               {request.jobApplication.candidateID.firstName}{" "}
               {request.jobApplication.candidateID.lastName}
             </h3>
-            <p className="boldText">{request.jobApplication.candidateID.job}</p>
-            <p className="boldText">{request.jobApplication.jobID.title}</p>
-            <p className="boldText">{request.jobApplication.jobID.city}</p>
-            <p>{request.jobApplication.jobID.description}</p>
+            <p>
+              Métiers du candidat:{" "}
+              <span className="boldText">
+                {request.jobApplication.candidateID.job}
+              </span>
+            </p>
+            <p>
+              Titre de l'annonce:{" "}
+              <span className="boldText">
+                {request.jobApplication.jobID.title}
+              </span>
+            </p>
+            <p>
+              Lieu:{" "}
+              <span className="boldText">
+                {request.jobApplication.jobID.city}
+              </span>
+            </p>
+            <p>
+              Description de l'annonce:{" "}
+              <span className="boldText">
+                {request.jobApplication.jobID.description}
+              </span>
+            </p>
             <div className="requestItemFooter">
               <button
                 onClick={() => approveRequest(request.id)}

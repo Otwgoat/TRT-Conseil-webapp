@@ -6,10 +6,9 @@ function findAllAdvertissements(){
   .get(apiPath("annonces"))
   .then(response => {
       const advertissements = response.data ;
-      
       return advertissements;
   })
-  .catch(error => console.log(error.response));
+  
 }
 
 function findOneAdvertissement(id){
@@ -17,10 +16,9 @@ function findOneAdvertissement(id){
   .get(apiPath("annonce/" + id))
   .then(response => {
       const advertissement = response.data ;
-      
       return advertissement;
   })
-  .catch(error => console.log(error.response));
+  
 }
 
 function postAdvertissement(data){
@@ -33,10 +31,9 @@ function getMyAdvertissements(){
   .get(apiPath("mes-annonces"))
   .then(response => {
       const advertissements = response.data ;
-      
       return advertissements;
   })
-  .catch(error => console.log(error.response));
+  
 }
 
 function deleteMyAdvertissement(id){
@@ -45,7 +42,7 @@ function deleteMyAdvertissement(id){
   .then(response => {
       return response.data;
   })
-  .catch(error => console.log(error.response));
+  
 }
 export default {
   findAllAdvertissements,

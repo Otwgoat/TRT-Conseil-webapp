@@ -3,10 +3,8 @@ import {jwtDecode} from "jwt-decode";
 import apiPath from "./apiPath";
 // set the default Authorization header for axios
 function authenticate(credentials) {
-    console.log(credentials);
     return axios
         .post(apiPath("login_check"), credentials)
-        .then(console.log(apiPath("login_check")))
         .then((response) => {
             return response.data.token;
             

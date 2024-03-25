@@ -26,8 +26,15 @@ export const AdvertissementRequests = () => {
         requests.map((request) => (
           <div key={request.id} className="requestItem">
             <h3 className="contentTitle">{request.jobID.title}</h3>
-            <p className="boldText">{request.jobID.city}</p>
-            <p className="boldText">{request.jobID.recruiterId.companyName}</p>
+            <p>
+              Lieu: <span className="boldText">{request.jobID.city}</span>
+            </p>
+            <p>
+              Recruteur:{" "}
+              <span className="boldText">
+                {request.jobID.recruiterId.companyName}
+              </span>
+            </p>
             <p>{request.jobID.description}</p>
             <div className="requestItemFooter">
               <button

@@ -48,7 +48,6 @@ export const AdDescriptionPage = () => {
     const fetchData = async () => {
       const data = await userApi.getUser();
       setCurrentUser(data);
-      console.log(data);
     };
     fetchData();
   }, []);
@@ -103,6 +102,9 @@ export const AdDescriptionPage = () => {
             <div id="descriptionFooter">
               <p>
                 Type de contrat: <span>{ad.type}</span>
+              </p>
+              <p>
+                Temps hebdomadaire: <span>{ad.planning}</span>
               </p>
               <p>
                 Salaire: <span>{ad.salary}€</span>
