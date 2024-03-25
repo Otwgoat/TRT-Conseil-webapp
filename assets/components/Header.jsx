@@ -12,9 +12,7 @@ export const Header = () => {
   const [startRedirect, setStartRedirect] = useState(false);
   const handleLogout = () => {
     authAPI.logout();
-    console.log("Déconnexion");
     setIsAuthenticated(false);
-    console.log("Vous êtes déconnecté");
     setStartRedirect(true);
   };
   useEffect(() => {
@@ -22,9 +20,7 @@ export const Header = () => {
       navigate("/login");
     }
   }, [startRedirect]);
-  useEffect(() => {
-    console.log("etat de isAuthenticated :" + isAuthenticated);
-  }, [isAuthenticated]);
+
   return (
     <header>
       <div id="firstTier" className="navItem">
