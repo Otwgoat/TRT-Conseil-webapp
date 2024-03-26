@@ -37,10 +37,13 @@ export const GetAdvertissements = () => {
                   : "Status: En attente d'approbation"}
               </p>
               <div className="contentCtas">
-                <Button
-                  path={`/annonce/${advertissement.id}`}
-                  title="Voir mon annonce"
-                />
+                {advertissement.approved && (
+                  <Button
+                    path={`/annonce/${advertissement.id}`}
+                    title="Voir mon annonce"
+                  />
+                )}
+
                 <button
                   className="ctaButton redButton"
                   onClick={() => handleDelete(advertissement.id)}
