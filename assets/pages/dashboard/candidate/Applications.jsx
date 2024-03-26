@@ -21,15 +21,24 @@ export const Applications = () => {
           applications.map((application) => (
             <div key={application.id} className="contentItem">
               <h3 className="contentTitle">Annonce n°{application.jobID.id}</h3>
-              <p className="boldText">
-                {application.jobID.recruiterId.companyName}
+              <p>
+                Recruteur:{" "}
+                <span className="boldText">
+                  {application.jobID.recruiterId.companyName}
+                </span>
               </p>
-              <p className="boldText">{application.jobID.city}</p>
+              <p>
+                Lieu:{" "}
+                <span className="boldText"> {application.jobID.city}</span>
+              </p>
 
               <p>
-                {application.approved
-                  ? "Status: Approuvée"
-                  : "Status: En attente d'approbation"}
+                Statut:{" "}
+                <span className="boldText">
+                  {application.approved
+                    ? "Approuvée"
+                    : "En attente d'approbation"}
+                </span>
               </p>
             </div>
           ))}
