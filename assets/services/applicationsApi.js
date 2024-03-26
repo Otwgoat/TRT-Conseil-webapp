@@ -2,7 +2,7 @@ import axios from "axios";
 import apiPath from "./apiPath";
 
 function getAllUserApplications() {
-    return axios.get(apiPath("candidatures/utilisateur/")).then((response) => {return response.data});
+    return axios.get(apiPath("candidatures/utilisateur")).then((response) => {return response.data});
 }
 
 function sendApplication(data){

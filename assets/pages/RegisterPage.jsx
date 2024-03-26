@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Header } from "../components/Header";
 import { FieldGroup } from "../components/FieldGroup";
 import userApi from "../services/userApi";
+import { Footer } from "../components/Footer";
 
 export const RegisterPage = () => {
   const formRef = useRef(formRef);
@@ -193,6 +194,7 @@ export const RegisterPage = () => {
           </button>
         </form>
       </main>
+      <Footer />
     </div>
   );
 };

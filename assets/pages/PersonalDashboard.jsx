@@ -7,6 +7,7 @@ import AuthContext from "../context/AuthContext";
 import { ConsultantDashboard } from "./dashboard/ConsultantDashboard";
 import { useNavigate } from "react-router-dom";
 import { AdminDashboard } from "./dashboard/AdminDashboard";
+import { Footer } from "../components/Footer";
 
 export const PersonalDashboard = () => {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ export const PersonalDashboard = () => {
           <p>Aucun utilisateur trouvé</p>
         </>
       )}
+      <Footer />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import advertissementApi from "../services/advertissementApi";
 import { Header } from "../components/Header";
 import Button from "../components/Button";
+import { Footer } from "../components/Footer";
 
 export const AdvertissementPage = () => {
   const [advertissements, setAdvertissements] = useState([]);
@@ -31,6 +32,7 @@ export const AdvertissementPage = () => {
           ))}
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

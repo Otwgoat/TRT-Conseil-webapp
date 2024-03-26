@@ -173,7 +173,7 @@ class UserController extends AbstractController
         $email = (new Email())
             ->from('lucas.jouffroy@gmail.com')
             ->to($userMail)
-            ->subject('Welcome to TRT-Conseil')
+            ->subject('Bienvenue sur TRT-Conseil')
             ->text('Bienvenue sur TRT-Conseil, votre compte a bien été créé. Vous pouvez dès à présent vous connecter à votre espace personnel. Voici le mot de passe qui vous a été attribué: ' . $randomPassword . '. Vous pourrez bientôt le modifier, en attendant conservez le précieusement. Bien cordialement, Votre équipe TRT-Conseil.');
         $mailer->send($email);
 

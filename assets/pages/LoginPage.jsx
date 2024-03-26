@@ -4,6 +4,7 @@ import authApi from "../services/authApi";
 import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import userApi from "../services/userApi";
+import { Footer } from "../components/Footer";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -74,6 +75,7 @@ export const LoginPage = () => {
           </div>
         </form>
       </main>
+      <Footer />
     </div>
   );
 };

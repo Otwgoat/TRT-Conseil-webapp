@@ -196,9 +196,9 @@ class JobApplicationController extends AbstractController
         $email = (new Email())
             ->from('lucas.jouffroy@gmail.com')
             ->to($recruiterMail)
-            ->subject('TRT-Conseil - New Approved Application')
-            ->text('Bonjour, une nouvelle candidature a été approuvée pour votre annonce. Vous pouvez consulter le CV du candidat en pièce jointe de ce mail. Bien cordialement, votre équipe TRT-Conseil.')
-            ->attachFromPath($cvPath);
+            ->subject('TRT-Conseil - Nouvelle candidature approuvée')
+            ->text('Bonjour, une nouvelle candidature a été approuvée pour votre annonce. Vous pouvez consulter le CV du candidat en suivant ce lien : ' + $cvPath + '. Bien cordialement, votre équipe TRT-Conseil.');
+
 
         // Send the email
         $mailer->send($email);

@@ -104,7 +104,7 @@ export const AdDescriptionPage = () => {
                 Type de contrat: <span>{ad.type}</span>
               </p>
               <p>
-                Temps hebdomadaire: <span>{ad.planning}</span>
+                Temps hebdomadaire: <span>{ad.planning}H par semaine</span>
               </p>
               <p>
                 Salaire: <span>{ad.salary}€</span>

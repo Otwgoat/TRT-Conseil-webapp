@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Header } from "../components/Header";
 import { useForm, ValidationError } from "@formspree/react";
 import { FieldGroup } from "../components/FieldGroup";
+import { Footer } from "../components/Footer";
 
 const Contact = () => {
   const formspreeEndpoint = () => {
@@ -60,6 +61,7 @@ const Contact = () => {
           </button>
         </form>
       </main>
+      <Footer />
     </div>
   );
 };
