@@ -52,4 +52,4 @@ Le back-end du projet est construit grâce à symphony, tandis que le front a é
 
 `$ php bin/console app:create-admin <firstname> <lastname> <email> <password>`
 
-Les consultants seront crées par l'administrateur, un mot de passe sera généré aléatoirement lors de la création et sera modifiable par la suuite.
+Les consultants seront crées par l'administrateur, un mot de passe sera généré aléatoirement lors de la création et sera modifiable par la suite.
